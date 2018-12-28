@@ -1,0 +1,20 @@
+{
+  "name": "package.json",
+  "version": "0.0.1",
+  "description": "first node js json file",
+  "main": "main.js",
+  "dependencies": {
+    "ejs": "^2.6.1",
+    "express": "^4.16.4",
+    "socket.io": "^2.2.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "success"
+  },
+  "keywords": [
+    "first"
+  ],
+  "author": "Kimkj",
+  "license": "ISC"
+}
