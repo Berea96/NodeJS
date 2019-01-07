@@ -1,0 +1,93 @@
+<!<!DOCTYPE html>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Socket.io Chat example</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <style>
+      #chatLogs {
+        border: 1px solid;
+        height: 500px;
+        width:335px;
+        overflow-y: scroll;
+        word-wrap: break-word;
+        word-break: break-all;
+        background-color: #cadff2;
+        float: left;
+      }
+      #join {
+        float: left;
+        border: 1px solid;
+        overflow-y: scroll;
+        word-wrap: break-word;
+        word-break: break-all;
+        width: 200px;
+        height: 150px;
+      }
+      .form-inline {
+        clear: both;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h3>Socket.io Chat Example</h3>
+      <div id="chatLogs"></div>
+      <div id="join"></div>
+      <form class="form-inline">
+        <div class="form-group">
+          <input type="text" class="form_control" id="msgForm">
+          <button type="submite" class="btn btn-primary">Send</button>
+        </div>
+      </form>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js">
+    </script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      $(function() {
+        var socket = io();
+
+        socket.emit("login", {
+          name: makeRandomName(),
+          userid: "11111@11111.com"
+        });
+
+        socket.on("login", (data) => {
+          $("#chatLog").append(data + "님이 입장하였습니다.\n");
+          $("#chatLogs").append("<div>" + data + "님이 입장하였습니다.</div>");
+          $("#join").append("<div id=" + data + ">" + data + " 온라인</div>");
+        });
+
+        socket.on("chat", (data) => {
+          $("#chatLog").append(data.from.name + " : " + data.msg + "\n");
+          $("#chatLogs").append("<div id='bg'>" + data.from.name + " : " + data.msg + "</div>");
+        });
+
+        socket.on("exit", (data) => {
+          $("#chatLog").append(data.name + "님이 나가셨습니다.\n")
+          $("#chatLogs").append("<div>" + data.name + "님이 나가셨습니다.</div>")
+          $("#" + data.name + "").remove();
+        })
+
+        $("form").submit((e) => {
+          e.preventDefault();
+          var $msgForm = $("#msgForm");
+
+          socket.emit("chat", {msg: $msgForm.val()});
+          $msgForm.val("");
+        });
+
+        function makeRandomName() {
+          var name = "";
+          var possible = "abcdefghijklmnopqrstuvwxyz";
+          for(var i = 0; i < 3; i++) {
+            name += possible.charAt(Math.floor(Math.random() * possible.length));
+          }
+          return name;
+        }
+      });
+    </script>
+  </body>
+</html>
