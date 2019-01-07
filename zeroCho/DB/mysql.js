@@ -9,11 +9,10 @@ app.set('port', process.env.PORT || 3000);
 
 app.get('/', function(req, res) {
   res.send('Root');
-  res.sendHead
 });
 
 app.get('/regi', (req, res) => {
-  var sql = 'insert into `member`(`id`, `pw`) values = ?;';
+  var sql = "insert into `member`(`id`, `pw`) values ?;";
   var values = [
     ['1', '1'],
     ['2', '2'],
@@ -24,6 +23,7 @@ app.get('/regi', (req, res) => {
   connection.query(sql, [values], (err, result) => {
     if(err) throw err;
     console.log("result : " + result.affectedRows);
+    res.send("result : " + result.affectedRows);
   });
 });
 
